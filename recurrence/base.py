@@ -597,6 +597,8 @@ class Weekday(object):
         """
         if number > 6:
             raise ValueError('number must be in range(7)')
+        if index is None:
+            index = 0
         self.number = number
         self.index = index
 
@@ -1296,11 +1298,13 @@ def from_dateutil_rruleset(rruleset):
     rdates = rruleset._rdate
     exdates = rruleset._exdate
 
-    dts = [r._dtstart for r in rruleset._rrule] + rruleset._rdate
+    dts = [r._dtstart for r in rruleset._rrule]
     if len(dts) > 0:
         dts.sort()
         dtstart = dts[0]
     else:
         dtstart = None
 
-    return Recurrence(dtstart, rrules, exrules, rdates, exdates)
+    dtend = None
+
+    return Recurrence(dtstart, dtend, rrules, exrules, rdates, exdates)
